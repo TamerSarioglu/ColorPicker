@@ -73,6 +73,7 @@ class MainActivity : ComponentActivity() {
 }
 
 sealed class Screen(val route: String) {
+    data object WelcomeScreen : Screen("welcome_screen")
     data object SelectImageScreen : Screen("select_image_screen")
     data object ColorPaletteScreen : Screen("color_palette_screen")
 }

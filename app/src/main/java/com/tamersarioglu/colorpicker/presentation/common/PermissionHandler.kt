@@ -1,6 +1,7 @@
 package com.tamersarioglu.colorpicker.presentation.common
 
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
@@ -34,16 +35,21 @@ class PermissionHandler {
 
             LaunchedEffect(key1 = true) {
                 hasCheckedPermission = true
+                val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    android.Manifest.permission.READ_MEDIA_IMAGES
+                } else {
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                }
+
                 when {
                     ContextCompat.checkSelfPermission(
                         context,
-                        android.Manifest.permission.READ_EXTERNAL_STORAGE
+                        permission
                     ) == PackageManager.PERMISSION_GRANTED -> {
                         onPermissionGranted()
                     }
-
                     else -> {
-                        permissionLauncher.launch(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                        permissionLauncher.launch(permission)
                     }
                 }
             }
